@@ -1,16 +1,13 @@
 <template>
   <header class="app-header" :class="{ open }">
     <div class="bar">
-      <router-link to="/" class="brand" aria-label="EasyVoice 首页">
+      <router-link to="/" class="brand" aria-label="EasyVoice 文本转语音">
         <span class="brand-mark" aria-hidden="true" />
         EasyVoice
       </router-link>
 
       <nav class="nav-inline" aria-label="主导航">
         <router-link v-for="l in links" :key="l.to" :to="l.to" class="nav-link">{{ l.label }}</router-link>
-        <a class="nav-link icon-link" :href="repo" target="_blank" rel="noopener" aria-label="GitHub">
-          <Github :size="18" :stroke-width="1.75" />
-        </a>
       </nav>
 
       <button
@@ -29,9 +26,6 @@
     <transition name="sheet">
       <nav v-if="open" id="ev-mobile-nav" class="nav-sheet" aria-label="主导航">
         <router-link v-for="l in links" :key="l.to" :to="l.to" class="sheet-link">{{ l.label }}</router-link>
-        <a class="sheet-link" :href="repo" target="_blank" rel="noopener">
-          GitHub <ExternalLink :size="14" :stroke-width="1.75" />
-        </a>
       </nav>
     </transition>
   </header>
@@ -41,13 +35,11 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
-import { Github, Menu, X, ExternalLink } from 'lucide-vue-next'
+import { Menu, X } from 'lucide-vue-next'
 
-const repo = 'https://github.com/cosin2077/easyVoice'
 const links = [
-  { to: '/', label: '首页' },
-  { to: '/generate', label: '生成语音' },
-  { to: '/about', label: '关于' },
+  { to: '/', label: '文本转语音' },
+  { to: '/help', label: '帮助' },
 ]
 const open = ref(false)
 const route = useRoute()
@@ -128,18 +120,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   color: var(--ev-text);
   background: rgba(0, 0, 0, 0.05);
 }
-.icon-link {
-  padding: 0 9px;
-}
 @media @bp-touch {
   .nav-link {
     height: var(--ev-touch);
     padding: 0 14px;
-  }
-  .icon-link {
-    width: var(--ev-touch);
-    justify-content: center;
-    padding: 0;
   }
 }
 

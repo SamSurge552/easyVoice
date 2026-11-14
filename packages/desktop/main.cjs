@@ -7,11 +7,12 @@ const fs = require('fs')
 const PORT = Number(process.env.PORT || 3000)
 const HOST = process.env.EASYVOICE_HOST || '127.0.0.1'
 const HEALTH_PATH = '/api/health'
+// Open directly on the Generate / 文本转语音 surface (router `/`).
 const UI_URL =
   process.env.EASYVOICE_UI_URL ||
   (process.env.EASYVOICE_DESKTOP_DEV === '1'
-    ? `http://${HOST}:5173`
-    : `http://${HOST}:${PORT}`)
+    ? `http://${HOST}:5173/`
+    : `http://${HOST}:${PORT}/`)
 
 /** @type {import('child_process').ChildProcess | null} */
 let backendProcess = null

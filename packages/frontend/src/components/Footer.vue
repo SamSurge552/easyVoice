@@ -1,32 +1,15 @@
 <template>
-  <!-- Footer Section -->
   <footer class="footer">
     <div class="footer-links">
-      <router-link class="footer-icon" to="/"><Home :size="14" :stroke-width="1.75" /> 首页</router-link>
-      <router-link class="footer-icon" to="/generate"><Mic :size="14" :stroke-width="1.75" /> 生成语音</router-link>
-      <router-link class="footer-icon" to="/about"><Info :size="14" :stroke-width="1.75" /> 关于</router-link>
-      <el-link
-        class="footer-icon"
-        href="https://github.com/cosin2077/easyVoice/issues"
-        target="_blank"
-        ><Mail :size="14" :stroke-width="1.75" /> 联系</el-link
-      >
+      <router-link class="footer-icon" to="/"><Mic :size="14" :stroke-width="1.75" /> 文本转语音</router-link>
+      <router-link class="footer-icon" to="/help"><Info :size="14" :stroke-width="1.75" /> 帮助</router-link>
     </div>
-    <p>
-      如有任何问题或建议，欢迎通过
-      <el-link
-        href="https://github.com/cosin2077/easyVoice/issues"
-        target="_blank"
-      >
-        GitHub Issues
-      </el-link>
-      联系。
-    </p>
+    <p>本地文本转语音工具</p>
   </footer>
 </template>
 
 <script setup lang="ts">
-import { Home, Mic, Info, Mail } from 'lucide-vue-next'
+import { Mic, Info } from 'lucide-vue-next'
 </script>
 
 <style scoped lang="less">
