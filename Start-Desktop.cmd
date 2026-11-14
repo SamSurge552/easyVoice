@@ -1,8 +1,9 @@
 @echo off
 REM Double-click this file (repo root) to open EasyVoice in a desktop window.
 REM 双击本文件即可启动 EasyVoice 桌面窗口（无需浏览器）。
-setlocal
+setlocal EnableExtensions
 cd /d "%~dp0"
+chcp 65001 >nul 2>&1
 
 if not exist "scripts\start-desktop.cmd" (
   echo [ERROR] Missing scripts\start-desktop.cmd — is this the EasyVoice repo root?

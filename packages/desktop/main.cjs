@@ -67,7 +67,10 @@ function startBackend(root) {
 
   // Always spawn with Node — under Electron, process.execPath is the Electron
   // binary and would not correctly run the Express server.
-  const nodeBin = process.env.NODE_BINARY || process.env.npm_node_execpath || 'node'
+  // Prefer PATH `node` (set NODE_BINARY to override). Do not use shell:true:
+  // npm_node_execpath is often `C:\Program Files\nodejs\node.exe`, which cmd.exe
+  // splits on the space and fails with "'C:\Program' is not recognized".
+  const nodeBin = process.env.NODE_BINARY || 'node'
   const child = spawn(nodeBin, [entry], {
     cwd: root,
     env: {
@@ -77,7 +80,7 @@ function startBackend(root) {
       MODE: 'production',
     },
     stdio: 'inherit',
-    shell: process.platform === 'win32',
+    windowsHide: true,
   })
 
   child.on('exit', (code, signal) => {
