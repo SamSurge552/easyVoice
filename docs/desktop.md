@@ -39,10 +39,10 @@ This opens an Electron window and starts the backend if nothing is already liste
 
 | OS | Launcher |
 |----|----------|
+| Windows | **`Start-Desktop.cmd`** at the repo root (double-click) — calls `scripts/start-desktop.cmd` |
 | Linux / macOS | `scripts/start-desktop.sh` (mark executable once: `chmod +x scripts/start-desktop.sh`) |
-| Windows | `scripts/start-desktop.cmd` |
 
-These scripts `cd` to the repo root, ensure dependencies/build when needed, then run `pnpm desktop`.
+These launchers `cd` to the repo root, ensure dependencies/build when needed, then run `pnpm desktop`.
 
 ### Dev shell (optional)
 
