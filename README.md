@@ -80,10 +80,16 @@ pnpm i -r
 # 开发模式
 pnpm dev
 
-# 生产模式
+# 生产模式（浏览器访问 http://localhost:3000）
 pnpm build
 pnpm start
+
+# 桌面窗口（Electron，无需浏览器）
+pnpm build
+pnpm desktop
 ```
+
+桌面应用说明（安装 / 双击启动 / 打包）：见 [docs/desktop.md](./docs/desktop.md)。Linux/macOS 可运行 `scripts/start-desktop.sh`，Windows 可双击 `scripts/start-desktop.cmd`。
 
 ### 3. 生成的音频、字幕保存位置
 

@@ -7,11 +7,20 @@
   },
   "scripts": {
     "dev": "cross-env MODE=development pnpm -r --parallel dev",
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "start": "cross-env MODE=production pnpm --filter @easy-voice/backend start"
+    "build": "pnpm -r --filter=!@easy-voice/desktop build",
+    "test": "pnpm -r --filter=!@easy-voice/desktop test",
+    "start": "cross-env MODE=production pnpm --filter @easy-voice/backend start",
+    "desktop": "pnpm --filter @easy-voice/desktop start",
+    "desktop:dev": "pnpm --filter @easy-voice/desktop dev"
   },
   "packageManager": "pnpm@10.6.3+sha512.bb45e34d50a9a76e858a95837301bfb6bd6d35aea2c5d52094fa497a467c43f5c440103ce2511e9e0a2f89c3d6071baac3358fc68ac6fb75e2ceb3d2736065e6",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild",
+      "@node-rs/jieba"
+    ]
+  },
   "devDependencies": {
     "cross-env": "^7.0.3"
   }
