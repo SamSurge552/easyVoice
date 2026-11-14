@@ -1,0 +1,47 @@
+{
+  "name": "@easy-voice/desktop",
+  "version": "0.0.23",
+  "private": true,
+  "description": "Electron desktop shell for EasyVoice",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env EASYVOICE_DESKTOP_DEV=1 electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^35.1.2",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "tech.ioplus.easyvoice",
+    "productName": "EasyVoice",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "main.cjs"
+    },
+    "linux": {
+      "target": ["AppImage", "dir"],
+      "category": "AudioVideo"
+    },
+    "mac": {
+      "target": ["dmg", "dir"],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": ["nsis", "dir"]
+    }
+  }
+}
