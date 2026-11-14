@@ -2,8 +2,8 @@
   <div v-if="store.audioList && store.audioList.length > 0" class="download-area">
     <!-- 下载列表标题 -->
     <div class="download-header">
-      <span class="header-title">下载列表 ({{ store.audioList.length }})</span>
-      <span class="header-tip">刷新页面会清空列表，请先下载需要的文件</span>
+      <span class="header-title">收听记录 ({{ store.audioList.length }})</span>
+      <span class="header-tip">已可直接播放；需要留存时再点 MP3 下载</span>
     </div>
 
     <!-- 下载列表容器 -->

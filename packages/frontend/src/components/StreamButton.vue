@@ -88,10 +88,15 @@ const realClose = () => {
   stop()
   if (audioRef.value) audioRef.value.src = ''
 }
+const play = () => {
+  const a = audioRef.value
+  if (!a) return
+  a.play().catch(() => {})
+}
 const toggle = () => {
   const a = audioRef.value
   if (!a) return
-  if (a.paused) a.play().catch(() => {})
+  if (a.paused) play()
   else a.pause()
 }
 const left10 = () => {
@@ -125,7 +130,7 @@ const input = debounce((value: Arrayable<number>) => {
   if (!Array.isArray(value)) seekTo(value)
 }, 100)
 
-defineExpose({ audioRef, refresh })
+defineExpose({ audioRef, refresh, play })
 </script>
 
 <style scoped lang="less">

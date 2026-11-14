@@ -2,7 +2,7 @@
   <div class="novel-to-audio-container">
     <div class="header">
       <h1>文本转语音</h1>
-      <p class="subtitle">自然朗读 · 多语种 · 可选 AI 分角</p>
+      <p class="subtitle">粘贴即听 · 边生成边播放 · 下载可选</p>
     </div>
 
     <el-row :gutter="20">
@@ -17,14 +17,14 @@
           <el-input
             v-model="audioConfig.inputText"
             type="textarea"
-            placeholder="在此粘贴小说、对话或旁白… 也可用下方「填入示例」"
+            placeholder="粘贴今日简报或任意文本，点「立即收听」边生成边播放…"
             :rows="12"
             resize="none"
             class="main-textarea"
           />
           <div class="text-toolbar">
             <el-button size="small" text type="primary" @click="fillSample">填入示例</el-button>
-            <span class="hint">支持 .txt 拖拽上传 · 长文本自动流式生成 · 插入停顿写 <code class="kbd">(((停顿2秒)))</code></span>
+            <span class="hint">默认直接播放，无需先存成文件 · 支持 .txt · 停顿写 <code class="kbd">(((停顿2秒)))</code></span>
           </div>
           <div class="upload-area">
             <el-upload
@@ -234,7 +234,7 @@
           @click="handleGenerate"
           :disabled="!canGenerate"
         >
-          生成语音
+          立即收听
         </el-button>
         <el-button
           v-else
@@ -242,7 +242,7 @@
           class="primary-cta ev-ghost stop-cta"
           @click="cancelGenerate"
         >
-          停止生成
+          停止
         </el-button>
         <el-button class="ev-ghost" :disabled="generating" size="large" @click="reset">重置</el-button>
       </div>
@@ -703,8 +703,22 @@ const updateAudioList = (data: GenerateResponse, runId: number) => {
   clearTimeout(doneProgressTimer)
   doneProgressTimer = setTimeout(() => (showDoneProgress.value = false), 1500)
   if ((data as any).warning) ElMessage.warning((data as any).warning)
-  else ElMessage.success('语音生成成功！')
-  playSuccessSound()
+  else ElMessage.success('可以收听了')
+  // Prefer speaking the result over a notification ding when audio is ready.
+  if (data?.audio) {
+    showStreamButton.value = true
+    nextTick(() => {
+      const audioEl = audioPlayerRef.value?.audioRef
+      if (!audioEl) return
+      // Stream path already set src + play; only kick off for non-stream completions.
+      if (audioEl.paused) {
+        if (!audioEl.src || audioEl.src !== data.audio) audioEl.src = data.audio
+        audioPlayerRef.value?.play?.()
+      }
+    })
+  } else {
+    playSuccessSound()
+  }
   generating.value = false
 
   celebrate(actionRow.value?.firstElementChild ?? actionRow.value, 300)
@@ -820,7 +834,11 @@ const generateAudioTask = async () => {
     )
     await nextTick()
     const audioEl = audioPlayerRef.value?.audioRef
-    if (audioEl && processor.value.audioUrl && run.isLive(runId)) audioEl.src = processor.value.audioUrl
+    if (audioEl && processor.value.audioUrl && run.isLive(runId)) {
+      audioEl.src = processor.value.audioUrl
+      // Listen-first: start playback as soon as the stream has a playable URL.
+      audioPlayerRef.value?.play?.()
+    }
   } catch (error) {
     failRun(runId, error)
   }
@@ -829,13 +847,13 @@ const beforeUnloadHandler = async (event: BeforeUnloadEvent) => {
   if (generationStore.audioList.length > 0) {
     // 同步阻止关闭，显示浏览器默认提示
     event.preventDefault()
-    event.returnValue = '操作将删除页面上的所有音频文件，请确认已经下载！'
+    event.returnValue = '离开后收听记录会清空；若需留存请先下载 MP3'
     return event.returnValue
   }
 
   if (generationStore.audioList.length > 0) {
     try {
-      await ElMessageBox.confirm('操作将删除页面上的所有音频文件，请确认已经下载！', '操作提示', {
+      await ElMessageBox.confirm('离开后收听记录会清空；若需留存请先下载 MP3', '操作提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
